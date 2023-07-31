@@ -1,8 +1,8 @@
-Description
+# Description
 
 The code represents a Solidity smart contract named Exception that showcases exception handling using require(), assert(), and revert() statements. Overall The main objective of this smart contract is to demonstrate different ways of handling exceptions and errors in Solidity. It includes three functions:
 
-Code Explanation
+# Code Explanation
 
 The contract begins with a special comment, // SPDX-License-Identifier: MIT, which specifies the MIT license under which the code is distributed. This indicates that the code can be used, modified, and distributed under the terms of the MIT license. The next line of code, pragma solidity 0.8.18;, specifies the version of the Solidity programming language used in the contract. In this case, the contract is written using Solidity version 0.8.18. The contract itself is named Exception. This Solidity smart contract is named Exception, and it demonstrates the usage of different exception-handling mechanisms: require(), assert(), and revert(). so let's go deeper into it. The contract has a state variable named value, which is declared as uint256 public. State variables are stored on the blockchain and maintain their values across different function calls and transactions. The setValue function: This function allows the contract owner to set a new value in the value state variable. However, there's a condition using require() that checks whether the new value is greater than the current value. If the condition is not met, the transaction will be reverted, and the specified error message ("New value must be greater than the current value.") will be returned.
 
