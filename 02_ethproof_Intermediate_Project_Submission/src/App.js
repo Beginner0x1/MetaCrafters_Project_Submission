@@ -11,19 +11,19 @@ function App() {
   const [message, setMessage] = useState("");
   const [currentGreeting, setCurrentGreeting] = useState("");
   const [isConnected, setIsConnected] = useState(false);
+  const [balance, setBalance] = useState(0); // Initialize with a default value
 
   useEffect(() => {
-  
     async function init() {
-    
       if (window.ethereum) {
-        setEthWallet(new ethers.providers.Web3Provider(window.ethereum));
-
         try {
-          const accounts = await window.ethereum.request({ method: "eth_accounts" });
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const accounts = await provider.listAccounts();
           if (accounts.length > 0) {
+            setEthWallet(provider);
             setAccount(accounts[0]);
             setIsConnected(true);
+            fetchBalance(accounts[0], provider);
           }
         } catch (error) {
           console.log("Error connecting with MetaMask:", error);
@@ -33,14 +33,22 @@ function App() {
     init();
   }, []);
 
-  async function fetchGreeting() {
-  
-    if (ethWallet) {
-    
-      const provider = new ethers.providers.Web3Provider(ethWallet);
-      const contract = new ethers.Contract(greeterAddress, Greeter.abi, provider);
+  async function fetchBalance(account, provider) {
+    try {
+      const balanceWei = await provider.getBalance(account);
+      const balanceEth = ethers.utils.formatEther(balanceWei);
+      setBalance(balanceEth);
+    } catch (error) {
+      console.log("Error fetching Balance:", error);
+    }
+  }
 
+
+  async function fetchGreeting() {
+    if (ethWallet) {
       try {
+        const provider = new ethers.providers.Web3Provider(ethWallet);
+        const contract = new ethers.Contract(greeterAddress, Greeter.abi, provider);
         const data = await contract.greet();
         setCurrentGreeting(data);
       } catch (error) {
@@ -59,6 +67,7 @@ function App() {
       const transaction = await contract.setGreeting(message);
       await transaction.wait();
       fetchGreeting();
+      fetchBalance();
     } catch (error) {
       console.log("Error setting greeting:", error);
     }
@@ -66,8 +75,10 @@ function App() {
 
   const requestAccount = async () => {
     try {
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const accounts = await provider.send("eth_requestAccounts", []);
       if (accounts.length > 0) {
+        setEthWallet(provider);
         setAccount(accounts[0]);
         setIsConnected(true);
       }
@@ -101,8 +112,9 @@ function App() {
                 value={message}
                 placeholder="Set Greeting Message"
               />
-              <h2 className="greeting">Uploaded Message: {currentGreeting}</h2>
+              <p>Balance: {balance} ETH</p>
             </div>
+            <h2 className="greeting">Uploaded Message: {currentGreeting}</h2>
           </div>
         )}
       </div>
