@@ -110,15 +110,20 @@ contract ERC20 {
 
 The Contract facilities a ERC20 token standard, which is a widely used standard for fungible tokens on the Ethereum blockchain. Here's a basic explanation of its main features:
 
-**Variables:**
+**Variables:**</br>
+
 totalSupply: This variable keeps track of the total supply of tokens.
 balanceOf: A mapping that stores the balance of each address.
 allowance: A mapping that records the amount of tokens approved by one address to be spent by another address.
 name, symbol, decimals: These variables define the name, symbol, and decimals of the token.
-**Events:**
+
+**Events:**</br>
+
 Transfer: This event is emitted whenever tokens are transferred from one address to another.
 Approval: This event is emitted whenever an approval is made for one address to spend tokens on behalf of another address.
-**Functions:**
+
+**Functions:**</br>
+
 transfer: Transfers tokens from the caller's address to the specified recipient.
 approve: Approves another address to spend tokens on behalf of the caller.
 transferFrom: Transfers tokens from one address to another, but with the allowance mechanism.
