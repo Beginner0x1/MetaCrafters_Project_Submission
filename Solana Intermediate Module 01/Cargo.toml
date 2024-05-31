@@ -1,0 +1,8 @@
+[package]
+name = "basic-program"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+borsh = "0.9.1"
+solana-program = "1.14.17"  # Ensure you use a version that matches your Solana installation
